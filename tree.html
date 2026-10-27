@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>شجرة عائلة فرح</title>
+  <title data-i18n="title_tree">شجرة عائلة فرح</title>
   <meta name="description" content="شجرة عائلة فرح التفاعلية — The Farah Family Tree">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +14,10 @@
 <body class="tree-page">
   <header class="site-header">
     <div class="container" style="max-width:none">
-      <a class="brand" href="index.html"><span class="brand-mark">ف</span><span class="brand-text">عائلة فرح</span></a>
+      <a class="brand" href="index.html"><span class="brand-mark">ف</span><span class="brand-text" data-i18n="brand">عائلة فرح</span></a>
       <nav class="nav">
-        <a href="index.html">الرئيسية</a>
-        <a href="tree.html" class="active">شجرة العائلة</a>
+        <a href="index.html" data-i18n="nav_home">الرئيسية</a>
+        <a href="tree.html" class="active" data-i18n="nav_tree">شجرة العائلة</a>
       </nav>
       <div class="auth-area" id="auth-area"></div>
     </div>
@@ -27,20 +27,20 @@
     <div class="tree-main">
       <div class="toolbar">
         <div class="search-box">
-          <input id="search" type="search" placeholder="ابحث بالاسم، أو الاسم واسم الأب: زهير أديب" autocomplete="off" aria-label="بحث">
+          <input id="search" type="search" data-i18n-placeholder="search_ph_tree" placeholder="ابحث بالاسم، أو الاسم واسم الأب: زهير أديب" autocomplete="off">
           <ul class="search-results" id="search-results" hidden></ul>
         </div>
-        <span class="search-hint">اكتب الاسم ثم اسم الأب والجد للتمييز</span>
+        <span class="search-hint" data-i18n="search_hint">اكتب الاسم ثم اسم الأب والجد للتمييز</span>
         <div class="toolbar-group">
-          <button class="btn btn-ghost btn-sm" id="expand-all" title="عرض كل الأجيال">توسيع الكل</button>
-          <button class="btn btn-ghost btn-sm" id="collapse-all" title="طيّ الشجرة">طيّ</button>
-          <button class="btn btn-ghost btn-icon" id="zoom-in" title="تكبير" aria-label="تكبير">+</button>
-          <button class="btn btn-ghost btn-icon" id="zoom-out" title="تصغير" aria-label="تصغير">−</button>
-          <button class="btn btn-ghost btn-icon" id="zoom-fit" title="ملاءمة الشاشة" aria-label="ملاءمة الشاشة">⤢</button>
+          <button class="btn btn-ghost btn-sm" id="expand-all" data-i18n-title="expand_all_tip"><span data-i18n="expand_all">توسيع الكل</span></button>
+          <button class="btn btn-ghost btn-sm" id="collapse-all" data-i18n-title="collapse_tip"><span data-i18n="collapse">طيّ</span></button>
+          <button class="btn btn-ghost btn-icon" id="zoom-in" data-i18n-title="zoom_in">+</button>
+          <button class="btn btn-ghost btn-icon" id="zoom-out" data-i18n-title="zoom_out">−</button>
+          <button class="btn btn-ghost btn-icon" id="zoom-fit" data-i18n-title="zoom_fit">⤢</button>
         </div>
       </div>
       <div class="tree-canvas" id="tree-canvas">
-        <div class="tree-status" id="tree-status">جارٍ تحميل الشجرة…</div>
+        <div class="tree-status" id="tree-status" data-i18n="loading">جارٍ تحميل الشجرة…</div>
       </div>
     </div>
     <aside class="panel" id="panel" aria-live="polite"></aside>
@@ -50,22 +50,23 @@
     <form class="modal" id="person-form">
       <h2 id="person-form-title">إضافة فرد</h2>
       <p class="muted" id="person-form-sub"></p>
-      <div class="form-row"><label for="f-name">الاسم *</label><input id="f-name" name="name" required maxlength="80"></div>
+      <div class="form-row"><label for="f-name" data-i18n="f_name">الاسم *</label><input id="f-name" name="name" required maxlength="80"></div>
+      <div class="form-row" id="name-en-row" hidden><label for="f-name-en" data-i18n="f_name_en">الاسم بالإنجليزية</label><input id="f-name-en" name="name_en" maxlength="80" dir="ltr"></div>
       <div class="form-2col">
-        <div class="form-row"><label for="f-sex">الجنس</label>
-          <select id="f-sex" name="sex"><option value="M">ذكر</option><option value="F">أنثى</option><option value="U">غير محدد</option></select></div>
-        <div class="form-row"><label for="f-mother">اسم الأم</label><input id="f-mother" name="mother_name" maxlength="80"></div>
+        <div class="form-row"><label for="f-sex" data-i18n="f_sex">الجنس</label>
+          <select id="f-sex" name="sex"><option value="M" data-i18n="male">ذكر</option><option value="F" data-i18n="female">أنثى</option><option value="U" data-i18n="f_unknown">غير محدد</option></select></div>
+        <div class="form-row"><label for="f-mother" data-i18n="f_mother">اسم الأم</label><input id="f-mother" name="mother_name" maxlength="80"></div>
       </div>
       <div class="form-2col">
-        <div class="form-row"><label for="f-birth">تاريخ الميلاد</label><input id="f-birth" name="birth_date" placeholder="مثال: 1950" maxlength="40"></div>
-        <div class="form-row"><label for="f-death">تاريخ الوفاة</label><input id="f-death" name="death_date" maxlength="40"></div>
+        <div class="form-row"><label for="f-birth" data-i18n="f_birth">تاريخ الميلاد</label><input id="f-birth" name="birth_date" data-i18n-placeholder="f_birth_ph" placeholder="مثال: 1950" maxlength="40"></div>
+        <div class="form-row"><label for="f-death" data-i18n="f_death">تاريخ الوفاة</label><input id="f-death" name="death_date" maxlength="40"></div>
       </div>
-      <div class="form-row"><label for="f-place">مكان الميلاد</label><input id="f-place" name="birth_place" maxlength="80"></div>
-      <div class="form-row"><label for="f-notes">ملاحظات</label><textarea id="f-notes" name="notes" rows="3" maxlength="2000"></textarea></div>
+      <div class="form-row"><label for="f-place" data-i18n="f_place">مكان الميلاد</label><input id="f-place" name="birth_place" maxlength="80"></div>
+      <div class="form-row"><label for="f-notes" data-i18n="notes">ملاحظات</label><textarea id="f-notes" name="notes" rows="3" maxlength="2000"></textarea></div>
       <div class="form-error" id="person-error"></div>
       <div class="form-actions">
-        <button type="button" class="btn btn-ghost" data-close>إلغاء</button>
-        <button type="submit" class="btn">حفظ</button>
+        <button type="button" class="btn btn-ghost" data-close data-i18n="cancel">إلغاء</button>
+        <button type="submit" class="btn" data-i18n="save">حفظ</button>
       </div>
     </form>
   </div>
@@ -73,6 +74,7 @@
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/data.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/tree.js"></script>

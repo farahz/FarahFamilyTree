@@ -1,15 +1,17 @@
-// Interactive family tree: D3 collapsible tree (root on the right, generations flow left),
-// search, details panel, and add/edit/delete for signed-in users.
+// Interactive family tree: D3 collapsible tree (in Arabic the root is on the right and generations
+// flow left; in English it is mirrored), search, details panel, and add/edit/delete for signed-in users.
 (async function () {
   const FD = window.FamilyData;
   const { esc, toast, openModal, closeModal } = window.UI;
+  const L = window.I18N;
   window.UI.init();
 
   const GAP_X = 210;   // distance between generations
   const GAP_Y = 46;    // distance between siblings
   const CARD_H = 34;
   const INITIAL_DEPTH = 4;
-  const fmt = (n) => n.toLocaleString('ar-EG');
+  const DIR = L.lang === 'en' ? 1 : -1; // direction generations grow along the x axis
+  const fmt = L.num;
   const cardWidth = (name) => Math.max(72, Math.min(170, name.length * 8.5 + 28));
 
   const canvas = document.getElementById('tree-canvas');
@@ -21,7 +23,7 @@
     persons = await FD.loadPersons();
     idx = FD.buildIndex(persons);
   } catch (e) {
-    status.textContent = 'تعذر تحميل الشجرة: ' + e.message;
+    status.textContent = L.t('tree_failed', { msg: e.message });
     return;
   }
   status.remove();
@@ -46,7 +48,7 @@
   svg.call(zoom).on('dblclick.zoom', null);
 
   function linkPath(s, t) {
-    const x1 = s.x - s.w / 2, x2 = t.x + t.w / 2, mx = (x1 + x2) / 2;
+    const x1 = s.x + DIR * s.w / 2, x2 = t.x - DIR * t.w / 2, mx = (x1 + x2) / 2;
     return `M${x1},${s.y}C${mx},${s.y} ${mx},${t.y} ${x2},${t.y}`;
   }
 
@@ -62,7 +64,7 @@
     d3.tree().nodeSize([GAP_Y, GAP_X]).separation((a, b) => (a.parent === b.parent ? 1 : 1.25))(hier);
 
     const next = new Map();
-    hier.each((d) => next.set(d.data.id, { x: -d.y, y: d.x, w: cardWidth(d.data.name) }));
+    hier.each((d) => next.set(d.data.id, { x: DIR * d.y, y: d.x, w: cardWidth(L.displayName(d.data)) }));
     const pathIds = new Set(selectedId != null ? idx.ancestors(selectedId).map((p) => p.id) : []);
     const t = svg.transition().duration(duration);
 
@@ -108,9 +110,9 @@
     all.select('rect.card')
       .attr('width', (d) => next.get(d.data.id).w)
       .attr('x', (d) => -next.get(d.data.id).w / 2);
-    all.select('text.name').text((d) => d.data.name);
+    all.select('text.name').text((d) => L.displayName(d.data));
     all.select('g.badge')
-      .attr('transform', (d) => `translate(${-next.get(d.data.id).w / 2},0)`)
+      .attr('transform', (d) => `translate(${DIR * next.get(d.data.id).w / 2},0)`)
       .style('display', (d) => (!expanded.has(d.data.id) && idx.children.get(d.data.id).length ? null : 'none'))
       .select('text').text((d) => '+' + idx.children.get(d.data.id).length);
     all.transition(t)
@@ -188,7 +190,7 @@
   // ---------- Details panel ----------
   function personButtons(list) {
     return `<ul class="person-list">${list
-      .map((p) => `<li><button class="person-link" data-goto="${p.id}">${esc(p.name)}</button></li>`)
+      .map((p) => `<li><button class="person-link" data-goto="${p.id}">${esc(L.displayName(p))}</button></li>`)
       .join('')}</ul>`;
   }
 
@@ -206,34 +208,34 @@
     const user = window.UI.user();
 
     const facts = [
-      ['الأم', p.mother_name], ['الميلاد', p.birth_date], ['مكان الميلاد', p.birth_place], ['الوفاة', p.death_date],
+      ['mother', p.mother_name], ['born', p.birth_date], ['birthplace', p.birth_place], ['died', p.death_date],
     ].filter(([, v]) => v);
 
     panel.innerHTML = `
       <div class="panel-header">
-        <h2>${esc(p.name)}</h2>
-        <button class="btn btn-ghost btn-icon" data-close-panel aria-label="إغلاق">×</button>
+        <h2>${esc(L.displayName(p))}</h2>
+        <button class="btn btn-ghost btn-icon" data-close-panel aria-label="${L.t('close')}">×</button>
       </div>
       <div class="panel-lineage">${esc(idx.lineageName(p.id, 5))}</div>
       <div class="panel-meta">
-        <span class="chip">الجيل ${fmt(chain.length)}</span>
-        ${p.sex === 'M' ? '<span class="chip">ذكر</span>' : p.sex === 'F' ? '<span class="chip">أنثى</span>' : ''}
-        <span class="chip">${fmt(kids.length)} من الأبناء</span>
-        <span class="chip">${fmt(idx.descendantCount(p.id))} من الذرية</span>
+        <span class="chip">${L.t('generation', { n: fmt(chain.length) })}</span>
+        ${p.sex === 'M' ? `<span class="chip">${L.t('male')}</span>` : p.sex === 'F' ? `<span class="chip">${L.t('female')}</span>` : ''}
+        <span class="chip">${L.t('n_children', { n: fmt(kids.length) })}</span>
+        <span class="chip">${L.t('n_descendants', { n: fmt(idx.descendantCount(p.id)) })}</span>
       </div>
-      ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` : ''}
-      ${p.notes ? `<h3>ملاحظات</h3><p style="white-space:pre-line;margin:0">${esc(p.notes)}</p>` : ''}
-      ${father ? `<h3>الأب</h3>${personButtons([father])}` : ''}
-      ${kids.length ? `<h3>الأبناء (${fmt(kids.length)})</h3>${personButtons(kids)}` : ''}
-      ${siblings.length ? `<h3>الإخوة (${fmt(siblings.length)})</h3>${personButtons(siblings)}` : ''}
-      ${chain.length > 1 ? `<h3>النسب حتى الجدّ الأول</h3><ol class="ancestry">${chain
-        .map((a) => `<li><button data-goto="${a.id}">${esc(a.name)}</button></li>`).join('')}</ol>` : ''}
+      ${facts.length ? `<dl class="facts">${facts.map(([k, v]) => `<dt>${L.t(k)}</dt><dd>${esc(v)}</dd>`).join('')}</dl>` : ''}
+      ${p.notes ? `<h3>${L.t('notes')}</h3><p style="white-space:pre-line;margin:0">${esc(p.notes)}</p>` : ''}
+      ${father ? `<h3>${L.t('father')}</h3>${personButtons([father])}` : ''}
+      ${kids.length ? `<h3>${L.t('children_h', { n: fmt(kids.length) })}</h3>${personButtons(kids)}` : ''}
+      ${siblings.length ? `<h3>${L.t('siblings_h', { n: fmt(siblings.length) })}</h3>${personButtons(siblings)}` : ''}
+      ${chain.length > 1 ? `<h3>${L.t('ancestry_h')}</h3><ol class="ancestry">${chain
+        .map((a) => `<li><button data-goto="${a.id}">${esc(L.displayName(a))}</button></li>`).join('')}</ol>` : ''}
       <div class="panel-actions">
         ${user ? `
-          <button class="btn btn-sm" data-action="add">+ إضافة ابن / ابنة</button>
-          <button class="btn btn-ghost btn-sm" data-action="edit">تعديل</button>
-          ${kids.length ? '' : '<button class="btn btn-danger btn-sm" data-action="delete">حذف</button>'}`
-        : `<span class="muted">${FD.live ? 'سجّل الدخول لإضافة أفراد أو تعديل البيانات.' : 'الإضافة والتعديل يتاحان بعد ربط قاعدة البيانات.'}</span>`}
+          <button class="btn btn-sm" data-action="add">${L.t('add_child')}</button>
+          <button class="btn btn-ghost btn-sm" data-action="edit">${L.t('edit')}</button>
+          ${kids.length ? '' : `<button class="btn btn-danger btn-sm" data-action="delete">${L.t('delete')}</button>`}`
+        : `<span class="muted">${L.t(FD.live ? 'login_to_edit' : 'demo_edit_note')}</span>`}
       </div>`;
     panel.classList.add('open');
     panel.scrollTop = 0;
@@ -258,7 +260,8 @@
   // ---------- Add / edit / delete ----------
   const form = document.getElementById('person-form');
   const formError = document.getElementById('person-error');
-  const FORM_FIELDS = ['name', 'sex', 'mother_name', 'birth_date', 'death_date', 'birth_place', 'notes'];
+  const formFields = () => ['name', ...(idx.hasNameEn ? ['name_en'] : []),
+    'sex', 'mother_name', 'birth_date', 'death_date', 'birth_place', 'notes'];
   let formMode = 'add';
 
   function openForm(mode) {
@@ -266,10 +269,11 @@
     const p = idx.byId.get(selectedId);
     form.reset();
     formError.textContent = '';
-    document.getElementById('person-form-title').textContent = mode === 'add' ? 'إضافة ابن / ابنة' : 'تعديل البيانات';
+    document.getElementById('name-en-row').hidden = !idx.hasNameEn;
+    document.getElementById('person-form-title').textContent = L.t(mode === 'add' ? 'form_add' : 'form_edit');
     document.getElementById('person-form-sub').textContent =
-      mode === 'add' ? 'الأب: ' + idx.lineageName(p.id, 3) : idx.lineageName(p.id, 3);
-    if (mode === 'edit') FORM_FIELDS.forEach((f) => { form.elements[f].value = p[f] || (f === 'sex' ? 'U' : ''); });
+      mode === 'add' ? L.t('form_father', { name: idx.lineageName(p.id, 3) }) : idx.lineageName(p.id, 3);
+    if (mode === 'edit') formFields().forEach((f) => { form.elements[f].value = p[f] || (f === 'sex' ? 'U' : ''); });
     else form.elements.sex.value = 'M';
     openModal('person-modal');
     form.elements.name.focus();
@@ -282,11 +286,11 @@
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const values = {};
-    FORM_FIELDS.forEach((f) => {
+    formFields().forEach((f) => {
       const v = form.elements[f].value.trim();
       values[f] = v === '' ? null : v;
     });
-    if (!values.name) return (formError.textContent = 'الاسم مطلوب');
+    if (!values.name) return (formError.textContent = L.t('name_required'));
     const btn = form.querySelector('button[type=submit]');
     btn.disabled = true;
     formError.textContent = '';
@@ -298,7 +302,7 @@
         expanded.add(selectedId);
         closeModal('person-modal');
         focusPerson(created.id);
-        toast('تمت إضافة ' + created.name);
+        toast(L.t('added', { name: L.displayName(created) }));
       } else {
         const updated = await FD.updatePerson(selectedId, values);
         persons[persons.findIndex((p) => p.id === updated.id)] = updated;
@@ -306,7 +310,7 @@
         closeModal('person-modal');
         renderPanel();
         render(200);
-        toast('تم حفظ التعديلات');
+        toast(L.t('saved'));
       }
     } catch (ex) {
       formError.textContent = ex.message;
@@ -317,13 +321,13 @@
 
   async function removeSelected() {
     const p = idx.byId.get(selectedId);
-    if (!confirm(`حذف «${idx.lineageName(p.id, 3)}» من الشجرة؟ لا يمكن التراجع عن ذلك.`)) return;
+    if (!confirm(L.t('confirm_delete', { name: idx.lineageName(p.id, 3) }))) return;
     try {
       await FD.deletePerson(p.id);
       persons.splice(persons.findIndex((x) => x.id === p.id), 1);
       idx = FD.buildIndex(persons);
       expanded.delete(p.id);
-      toast('تم الحذف');
+      toast(L.t('deleted'));
       if (p.father_id != null) focusPerson(p.father_id);
       else { select(null); render(); }
     } catch (ex) {
@@ -344,8 +348,8 @@
     if (!q) return (resultsEl.hidden = true);
     resultsEl.innerHTML = results.length
       ? results.map((p, i) => `<li data-i="${i}" class="${i === active ? 'active' : ''}">
-          <span>${esc(idx.lineageName(p.id, 4))}</span><span class="gen">الجيل ${fmt(idx.ancestors(p.id).length)}</span></li>`).join('')
-      : '<li class="empty">لا توجد نتائج</li>';
+          <span>${esc(idx.lineageName(p.id, 4))}</span><span class="gen">${L.t('generation', { n: fmt(idx.ancestors(p.id).length) })}</span></li>`).join('')
+      : `<li class="empty">${L.t('no_results')}</li>`;
     resultsEl.hidden = false;
   }
 

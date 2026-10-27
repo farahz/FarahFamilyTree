@@ -1,6 +1,7 @@
-// Header auth controls, login modal, demo notice and toasts shared by all pages.
+// Header auth controls, language switch, login modal, demo notice and toasts shared by all pages.
 (function () {
   const FD = window.FamilyData;
+  const { t } = window.I18N;
   let currentUser = null;
   const listeners = [];
 
@@ -30,16 +31,16 @@
     wrap.id = 'login-modal';
     wrap.innerHTML = `
       <form class="modal" id="login-form">
-        <h2>تسجيل الدخول</h2>
-        <p class="muted">تسجيل الدخول متاح لأفراد العائلة المخوّلين بتحديث الشجرة.</p>
-        <div class="form-row"><label for="login-email">البريد الإلكتروني</label>
+        <h2>${t('login_title')}</h2>
+        <p class="muted">${t('login_intro')}</p>
+        <div class="form-row"><label for="login-email">${t('email')}</label>
           <input id="login-email" type="email" required autocomplete="email" dir="ltr"></div>
-        <div class="form-row"><label for="login-password">كلمة المرور</label>
+        <div class="form-row"><label for="login-password">${t('password')}</label>
           <input id="login-password" type="password" required autocomplete="current-password" dir="ltr"></div>
         <div class="form-error" id="login-error"></div>
         <div class="form-actions">
-          <button type="button" class="btn btn-ghost" data-close>إلغاء</button>
-          <button type="submit" class="btn">دخول</button>
+          <button type="button" class="btn btn-ghost" data-close>${t('cancel')}</button>
+          <button type="submit" class="btn">${t('submit_login')}</button>
         </div>
       </form>`;
     document.body.appendChild(wrap);
@@ -55,9 +56,9 @@
       try {
         await FD.auth.signIn(document.getElementById('login-email').value.trim(), document.getElementById('login-password').value);
         closeModal('login-modal');
-        toast('تم تسجيل الدخول');
+        toast(t('logged_in'));
       } catch (ex) {
-        err.textContent = ex.message === 'Invalid login credentials' ? 'البريد الإلكتروني أو كلمة المرور غير صحيحة' : ex.message;
+        err.textContent = ex.message === 'Invalid login credentials' ? t('bad_credentials') : ex.message;
       } finally {
         btn.disabled = false;
       }
@@ -67,21 +68,23 @@
   function renderAuth() {
     const area = document.getElementById('auth-area');
     if (!area) return;
+    const langBtn = `<button class="btn btn-ghost btn-sm lang-toggle" id="lang-btn">${t('lang_switch')}</button>`;
     if (currentUser) {
-      area.innerHTML = `<span class="auth-user" title="${esc(currentUser.email)}">${esc(currentUser.email)}</span>
-        <button class="btn btn-ghost btn-sm" id="logout-btn">خروج</button>`;
+      area.innerHTML = `${langBtn}<span class="auth-user" title="${esc(currentUser.email)}">${esc(currentUser.email)}</span>
+        <button class="btn btn-ghost btn-sm" id="logout-btn">${t('logout')}</button>`;
       document.getElementById('logout-btn').onclick = async () => {
         await FD.auth.signOut();
-        toast('تم تسجيل الخروج');
+        toast(t('logged_out'));
       };
     } else {
-      area.innerHTML = `<button class="btn btn-sm" id="login-btn">دخول</button>`;
+      area.innerHTML = `${langBtn}<button class="btn btn-sm" id="login-btn">${t('login')}</button>`;
       document.getElementById('login-btn').onclick = () => {
-        if (!FD.live) return toast('وضع العرض التجريبي: التعديل غير مفعّل بعد');
+        if (!FD.live) return toast(t('demo_no_edit'));
         openModal('login-modal');
         document.getElementById('login-email').focus();
       };
     }
+    document.getElementById('lang-btn').onclick = window.I18N.switchLang;
   }
 
   function setUser(u) {
@@ -94,7 +97,7 @@
     if (!FD.live) {
       const note = document.createElement('div');
       note.className = 'demo-banner';
-      note.textContent = 'نسخة تجريبية — البيانات للعرض فقط';
+      note.textContent = t('demo_banner');
       document.body.prepend(note);
     }
     injectLoginModal();

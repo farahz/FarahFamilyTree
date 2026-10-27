@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>عائلة فرح – الناصرة</title>
+  <title data-i18n="title_home">عائلة فرح – الناصرة</title>
   <meta name="description" content="موقع عائلة فرح من الناصرة وشجرة العائلة التفاعلية — The Farah Family of Nazareth">
   <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,10 +14,10 @@
 <body>
   <header class="site-header">
     <div class="container">
-      <a class="brand" href="index.html"><span class="brand-mark">ف</span><span class="brand-text">عائلة فرح</span></a>
+      <a class="brand" href="index.html"><span class="brand-mark">ف</span><span class="brand-text" data-i18n="brand">عائلة فرح</span></a>
       <nav class="nav">
-        <a href="index.html" class="active">الرئيسية</a>
-        <a href="tree.html">شجرة العائلة</a>
+        <a href="index.html" class="active" data-i18n="nav_home">الرئيسية</a>
+        <a href="tree.html" data-i18n="nav_tree">شجرة العائلة</a>
       </nav>
       <div class="auth-area" id="auth-area"></div>
     </div>
@@ -25,13 +25,13 @@
 
   <section class="hero">
     <div class="container hero-content">
-      <div class="hero-eyebrow">الناصرة · الجليل</div>
-      <h1>عائلة فرح</h1>
-      <div class="hero-en">The Farah Family of Nazareth</div>
-      <p class="hero-sub">جذورٌ ممتدة عبر <span data-stat="generations">١٣</span> جيلاً، من الجدّ سليمان إلى أبناء اليوم.</p>
+      <div class="hero-eyebrow" data-i18n="hero_eyebrow">الناصرة · الجليل</div>
+      <h1 data-i18n="hero_title">عائلة فرح</h1>
+      <div class="hero-alt" data-i18n="hero_alt">The Farah Family of Nazareth</div>
+      <p class="hero-sub" data-i18n-html="hero_sub">جذورٌ ممتدة عبر <span data-stat="generations">١٣</span> جيلاً، من الجدّ سليمان إلى أبناء اليوم.</p>
       <form class="hero-search" action="tree.html" method="get">
-        <input name="q" type="search" placeholder="ابحث عن اسم… مثال: زهير أديب" aria-label="بحث في شجرة العائلة">
-        <button class="btn btn-gold" type="submit">بحث</button>
+        <input name="q" type="search" data-i18n-placeholder="search_ph_home" placeholder="ابحث عن اسم… مثال: زهير أديب">
+        <button class="btn btn-gold" type="submit" data-i18n="search_btn">بحث</button>
       </form>
     </div>
   </section>
@@ -39,36 +39,36 @@
   <section class="section" id="about">
     <div class="container about-grid">
       <div class="about-text">
-        <h2 class="section-title">عن العائلة</h2>
+        <h2 class="section-title" data-i18n="about_title">عن العائلة</h2>
         <div class="ornament"></div>
-        <p>عائلة فرح من عائلات مدينة الناصرة. يجمع هذا الموقع شجرة العائلة كما وثّقها أبناؤها، ليبقى تاريخها متاحاً للأجيال القادمة ولكل أفرادها أينما كانوا.</p>
-        <p>تبدأ الشجرة بالجدّ <strong>سليمان</strong>، ثم ابنه <strong>عبدالله القلزي</strong>، ثم <strong>فرح</strong> الذي تحمل العائلة اسمه، وتتفرّع منه الأجيال حتى اليوم.</p>
-        <div class="placeholder-note">نص تجريبي — سيُستبدل بنبذة تاريخية عن العائلة وصورها لاحقاً.</div>
+        <p data-i18n-html="about_p1"></p>
+        <p data-i18n-html="about_p2"></p>
+        <div class="placeholder-note" data-i18n="about_placeholder"></div>
       </div>
       <figure class="about-figure">
-        <figcaption>مكان مخصص لصورة العائلة</figcaption>
+        <figcaption data-i18n="about_caption"></figcaption>
       </figure>
     </div>
   </section>
 
   <section class="section section-alt">
     <div class="container">
-      <h2 class="section-title">العائلة بالأرقام</h2>
+      <h2 class="section-title" data-i18n="stats_title">العائلة بالأرقام</h2>
       <div class="ornament"></div>
       <div class="stats">
-        <div class="stat"><div class="stat-value" data-stat="persons">—</div><div class="stat-label">فرداً موثّقاً</div></div>
-        <div class="stat"><div class="stat-value" data-stat="generations">—</div><div class="stat-label">جيلاً</div></div>
-        <div class="stat"><div class="stat-value" data-stat="branches">—</div><div class="stat-label">فرعاً رئيسياً</div></div>
-        <div class="stat"><div class="stat-value" data-stat="families">—</div><div class="stat-label">أسرة</div></div>
+        <div class="stat"><div class="stat-value" data-stat="persons">—</div><div class="stat-label" data-i18n="stat_persons"></div></div>
+        <div class="stat"><div class="stat-value" data-stat="generations">—</div><div class="stat-label" data-i18n="stat_generations"></div></div>
+        <div class="stat"><div class="stat-value" data-stat="branches">—</div><div class="stat-label" data-i18n="stat_branches"></div></div>
+        <div class="stat"><div class="stat-value" data-stat="families">—</div><div class="stat-label" data-i18n="stat_families"></div></div>
       </div>
     </div>
   </section>
 
   <section class="section">
     <div class="container">
-      <h2 class="section-title">أصل العائلة وفروعها</h2>
+      <h2 class="section-title" data-i18n="origin_title">أصل العائلة وفروعها</h2>
       <div class="ornament"></div>
-      <p class="section-lead">التسلسل من الجدّ الأول حتى فرح، ثم الفروع الرئيسية التي تفرّعت من أحفاده. اضغط على أي فرع لفتحه في الشجرة.</p>
+      <p class="section-lead" data-i18n="origin_lead"></p>
       <div class="origin" id="origin"></div>
       <div class="branches" id="branches"></div>
     </div>
@@ -78,23 +78,24 @@
     <div class="container">
       <div class="cta">
         <div>
-          <h2>استكشف شجرة العائلة</h2>
-          <p>تصفّح الأجيال، وابحث عن أي فرد، وتتبّع نسبه حتى الجدّ الأول.</p>
+          <h2 data-i18n="cta_title">استكشف شجرة العائلة</h2>
+          <p data-i18n="cta_text"></p>
         </div>
-        <a class="btn btn-gold" href="tree.html">افتح الشجرة التفاعلية</a>
+        <a class="btn btn-gold" href="tree.html" data-i18n="cta_btn">افتح الشجرة التفاعلية</a>
       </div>
     </div>
   </section>
 
   <footer class="site-footer">
     <div class="container">
-      <span>© عائلة فرح – الناصرة</span>
-      <span dir="ltr">The Farah Family · Nazareth</span>
+      <span data-i18n="footer">© عائلة فرح – الناصرة</span>
+      <span data-i18n="footer_alt">The Farah Family · Nazareth</span>
     </div>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
   <script src="js/config.js"></script>
+  <script src="js/i18n.js"></script>
   <script src="js/data.js"></script>
   <script src="js/ui.js"></script>
   <script src="js/home.js"></script>

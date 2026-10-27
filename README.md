@@ -45,6 +45,16 @@ python -m http.server 8000
 Push to GitHub, then go to **Settings → Pages → Deploy from a branch → `main` / root**.
 The site will be at `https://<user>.github.io/<repo>/`.
 
+## Arabic / English
+
+Every page has a language button in the header (`English` / `عربي`). The choice is remembered in the
+browser, and links can force it with `?lang=en` or `?lang=ar`. Interface text lives in `js/i18n.js`.
+
+Names are shown in English through a built-in transliteration table (`NAME_WORDS` / `NAME_PHRASES`
+in `js/i18n.js`). To give a person a specific English spelling, run `supabase/002_name_en.sql` once.
+That adds a `name_en` column, and a "Name in English" field then appears in the add/edit form.
+A value saved there overrides the automatic transliteration.
+
 ## Search tips
 
 Type a name, or a name followed by father and grandfather names, to tell people apart:

@@ -4,18 +4,25 @@
   const live = !!(cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase);
   const sb = live ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey) : null;
 
-  const FIELDS = 'id,name,sex,father_id,mother_name,birth_date,death_date,birth_place,notes,photo_url';
+  const BASE_FIELDS = 'id,name,sex,father_id,mother_name,birth_date,death_date,birth_place,notes,photo_url';
+  // name_en is added by supabase/002_name_en.sql; until then the query falls back to BASE_FIELDS.
+  let fields = BASE_FIELDS + ',name_en';
+  const { t, displayName, nameEn } = window.I18N;
 
   async function loadPersons() {
     if (!live) {
       const res = await fetch('data/family.json');
-      if (!res.ok) throw new Error('تعذر تحميل البيانات');
+      if (!res.ok) throw new Error(t('load_failed'));
       return res.json();
     }
     const all = [];
     const page = 1000;
     for (let from = 0; ; from += page) {
-      const { data, error } = await sb.from('persons').select(FIELDS).order('id').range(from, from + page - 1);
+      const { data, error } = await sb.from('persons').select(fields).order('id').range(from, from + page - 1);
+      if (error && error.code === '42703' && fields !== BASE_FIELDS) {
+        fields = BASE_FIELDS; // column does not exist
+        return loadPersons();
+      }
       if (error) throw error;
       all.push(...data);
       if (data.length < page) break;
@@ -24,19 +31,19 @@
   }
 
   function requireLive() {
-    if (!live) throw new Error('الموقع في وضع العرض التجريبي. أضف مفتاح Supabase في js/config.js لتفعيل التعديل.');
+    if (!live) throw new Error(t('read_only'));
   }
 
   async function addPerson(person) {
     requireLive();
-    const { data, error } = await sb.from('persons').insert(person).select(FIELDS).single();
+    const { data, error } = await sb.from('persons').insert(person).select(fields).single();
     if (error) throw error;
     return data;
   }
 
   async function updatePerson(id, patch) {
     requireLive();
-    const { data, error } = await sb.from('persons').update(patch).eq('id', id).select(FIELDS).single();
+    const { data, error } = await sb.from('persons').update(patch).eq('id', id).select(fields).single();
     if (error) throw error;
     return data;
   }
@@ -119,11 +126,12 @@
     function lineageName(id, max = 4) {
       const chain = ancestors(id).slice(0, max);
       return chain
-        .map((p, i) => (i === 0 ? p.name : (chain[i - 1].sex === 'F' ? 'بنت ' : 'بن ') + p.name))
+        .map((p, i) => (i === 0 ? displayName(p) : t(chain[i - 1].sex === 'F' ? 'daughter_of' : 'son_of') + ' ' + displayName(p)))
         .join(' ');
     }
 
-    // "زهير اديب" finds Zuhier whose father is Adib: token i must match ancestor i.
+    // "زهير اديب" / "zuhier adib" finds Zuhier whose father is Adib: token i must match ancestor i,
+    // in either the Arabic or the English form of the name.
     function search(query, limit = 30) {
       const tokens = normalize(query).split(' ').filter(Boolean);
       if (!tokens.length) return [];
@@ -131,8 +139,9 @@
       for (const p of persons) {
         const chain = ancestors(p.id);
         if (chain.length < tokens.length) continue;
-        if (tokens.every((t, i) => normalize(chain[i].name).includes(t))) {
-          const exact = normalize(p.name) === tokens[0] ? 0 : 1;
+        const matches = (tok, q) => normalize(q.name).includes(tok) || normalize(nameEn(q)).includes(tok);
+        if (tokens.every((tok, i) => matches(tok, chain[i]))) {
+          const exact = normalize(p.name) === tokens[0] || normalize(nameEn(p)) === tokens[0] ? 0 : 1;
           results.push({ person: p, score: exact * 1000 + chain.length });
         }
       }
@@ -142,7 +151,10 @@
 
     const generations = Math.max(0, ...persons.map((p) => ancestors(p.id).length));
 
-    return { persons, byId, children, roots, ancestors, descendantCount, lineageName, search, generations };
+    // name_en is editable only once supabase/002_name_en.sql has added the column.
+    const hasNameEn = persons.length > 0 && 'name_en' in persons[0];
+
+    return { persons, byId, children, roots, ancestors, descendantCount, lineageName, search, generations, hasNameEn };
   }
 
   window.FamilyData = { live, loadPersons, addPerson, updatePerson, deletePerson, auth, normalize, buildIndex };

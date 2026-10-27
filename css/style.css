@@ -87,13 +87,14 @@ button { font: inherit; cursor: pointer; }
   position: relative; min-height: 520px;
   display: flex; align-items: flex-end;
   color: #fff; overflow: hidden;
-  background: var(--cedar-dark) url('../assets/banner.svg') center / cover no-repeat;
+  background: var(--cedar-dark) url('../assets/farah-family.jpg') center / cover no-repeat;
 }
 .hero::after {
   content: ''; position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(20, 30, 24, 0.85), rgba(20, 30, 24, 0.15) 60%, transparent);
+  background: linear-gradient(to top, rgba(20, 30, 24, 0.92), rgba(20, 30, 24, 0.55) 55%, rgba(20, 30, 24, 0.3));
 }
-.hero-content { position: relative; z-index: 1; padding-bottom: 56px; padding-top: 96px; }
+.hero-content { position: relative; z-index: 1; padding-bottom: 56px; padding-top: 96px; text-shadow: 0 2px 14px rgba(0, 0, 0, 0.75), 0 1px 3px rgba(0, 0, 0, 0.6); }
+.hero-search { text-shadow: none; }
 .hero-eyebrow { color: var(--gold-soft); letter-spacing: 0.08em; font-size: 15px; margin-bottom: 8px; }
 .hero h1 { font-size: clamp(40px, 7vw, 72px); margin-bottom: 4px; }
 .hero-sub { font-size: clamp(17px, 2.4vw, 21px); opacity: 0.92; max-width: 640px; margin: 0 0 28px; }
@@ -113,6 +114,7 @@ button { font: inherit; cursor: pointer; }
 
 .about-grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 40px; align-items: start; }
 .about-text p { margin: 0 0 1em; font-size: 17px; }
+.about-text .about-byline { font-family: var(--font-display); font-size: 19px; color: var(--cedar); margin-top: 1.4em; }
 .placeholder-note {
   border: 1px dashed var(--stone-400); background: var(--stone-50); color: var(--ink-soft);
   border-radius: var(--radius); padding: 14px 18px; font-size: 14px;

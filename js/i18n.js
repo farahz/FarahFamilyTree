@@ -30,10 +30,13 @@
       hero_sub: 'جذورٌ ممتدة عبر <span data-stat="generations">١٣</span> جيلاً، من الجدّ سليمان إلى أبناء اليوم.',
       search_ph_home: 'ابحث عن اسم… مثال: زهير أديب',
       search_btn: 'بحث',
-      about_title: 'عن العائلة',
-      about_p1: 'عائلة فرح من عائلات مدينة الناصرة. يجمع هذا الموقع شجرة العائلة كما وثّقها أبناؤها، ليبقى تاريخها متاحاً للأجيال القادمة ولكل أفرادها أينما كانوا.',
-      about_p2: 'تبدأ الشجرة بالجدّ <strong>سليمان</strong>، ثم ابنه <strong>عبدالله القلزي</strong>، ثم <strong>فرح</strong> الذي تحمل العائلة اسمه، وتتفرّع منه الأجيال حتى اليوم.',
-      about_placeholder: 'نص تجريبي — سيُستبدل بنبذة تاريخية عن العائلة وصورها لاحقاً.',
+      about_title: 'نبذة تاريخية',
+      about_history:
+        '<p>يعود أصل عائلة فرح إلى جدها الأول فرح بن عبدالله القلزي بن سليمان بن نمر. ويقال ان عبدالله القلزي عمل كاتبا في ديوان عشيرة الغزاوية في قرية صخرة في جبل عجلون (الاردن اليوم), وقد هجرها لحادثة ما, على ما يبدو في النصف الأول من القرن السابع عشر.</p>' +
+        '<p>وكان لعبد الله من الابناء أربعة: فرح (جدنا), خليف, نمر ومحارب. تتعدد الروايات حول أبناء أخرين له. أما نمر, فنسله اليوم هم عشيرة النمورة في بلدة الحصن (التابعة لمحافظة إربد), وتعتبر من أكبر وأقدم العشائر المسيحية هناك. وأما محارب فقد أسلم, ويعرف نسله بعشيرة العيل, ويقال أنهم إنضموا إلى الغزاوية.</p>' +
+        '<p>أما عبدالله وإبنيه فرح وخليف, فهجروا صخرة إلى جوار جبل الطور (تابور), وبعد ذلك إستوطنوا قرية الشجرة ومن هناك قدموا أخيرًا إلى الناصرة. وأما نسل فرح فهم دار فرح في الناصرة, إحدى أقدم وأكبر العائلات المسيحية, وقد هاجر العديد من افراد العائلة خارج البلاد ونسلهم يتواجد اليوم في العديد من دول العالم, بالاخص مدينة فلينت في ولاية ميشيغان الامريكية.</p>' +
+        '<p>وأما نسل خليف فهم حمولة الخليفية بالناصرة وتضم أكثر من عشرة عائلات. ويدعي نسل القلزي نسبًا غسانيًا, مع أن لا إثبات مباشر لذلك.</p>',
+      about_byline: 'ميخائيل فرح – الناصرة',
       about_caption: 'مكان مخصص لصورة العائلة',
       stats_title: 'العائلة بالأرقام',
       stat_persons: 'فرداً موثّقاً',
@@ -131,10 +134,13 @@
       hero_sub: 'Roots reaching back <span data-stat="generations">13</span> generations, from our forefather Suleiman to the present day.',
       search_ph_home: 'Search a name… e.g. Zuhier Adib',
       search_btn: 'Search',
-      about_title: 'About the Family',
-      about_p1: 'The Farah family is one of the families of Nazareth. This site brings together the family tree as recorded by its members, so that its history remains available to future generations and to every member of the family, wherever they are.',
-      about_p2: 'The tree begins with our forefather <strong>Suleiman</strong>, then his son <strong>Abdallah al-Qalazi</strong>, then <strong>Farah</strong>, whose name the family carries, and branches out from him through the generations to this day.',
-      about_placeholder: 'Placeholder text — to be replaced with a history of the family and its photos.',
+      about_title: 'Brief History',
+      about_history:
+        '<p>The origin of the Farah Family goes back to its first ancestor Farah bin Abdullah Al-Qalazi bin Sulieman bin Nimer. It is said the Abduallah Al-Qalazi was the secretary of the Ghazzawiya clan in Sakhra in Jabal Ajloun (Jordan), and he left it because of some incident, apparently in the first half of the seventeenth century.</p>' +
+        '<p>Abdullah had 4 sons: Farah (Our Ancestor), Khief, Nimer and Muhareb. There are accounts stating he had more sons. The descendants of Nimer are the Nmura Clan in the city of Hosn (Irbid District), and is considered one of the oldest and biggest Christian families there. Muhareb converted to Islam, and his descendants are known as Al-Iyal Clan, and it is said that they have joined the Ghazzawiya.</p>' +
+        '<p>Abdullah and his sons Farah and Khlief left Sakhra to live near Mount Tabor, then to Al-Shajara village, from there they finally came to Nazareth. The descendants of Farah are the Farah Family in Nazareth, one of the oldest and biggest Christian families, and many family members has since left Nazareth, and their descendants live now in many countries worldwide, especially Flint, Michigan USA.</p>' +
+        '<p>The descendants of Khlief are known as Khliefiyye, and they comprise more than ten families in Nazareth. The descendants of Abdullah Al-Qalazi claim descent to Ghassanid Arabs, though no direct proof exists.</p>',
+      about_byline: 'Michael Farah – Nazareth',
       about_caption: 'Reserved for a family photo',
       stats_title: 'The Family in Numbers',
       stat_persons: 'recorded members',

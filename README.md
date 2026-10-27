@@ -17,7 +17,8 @@ Family website with an interactive family tree, built from `Farah Family 480.ged
 | `js/ui.js` | Header login/logout, login modal, toasts |
 | `js/home.js`, `js/tree.js` | Page logic |
 | `css/style.css` | All styles |
-| `assets/banner.svg` | Placeholder banner, to be replaced with the family photo |
+| `assets/farah-family.jpg` | Home page banner (family photo collage) |
+| `assets/banner.svg` | Nazareth illustration used in the history section |
 | `supabase/schema.sql` | Table + Row Level Security policies |
 | `supabase/seed.sql` | The 480 people from the GEDCOM file |
 | `tools/gedcom_to_data.py` | Regenerates `data/family.json` and `supabase/seed.sql` from a `.ged` file |

@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>شجرة عائلة فرح</title>
+  <meta name="description" content="شجرة عائلة فرح التفاعلية — The Farah Family Tree">
+  <link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="tree-page">
+  <header class="site-header">
+    <div class="container" style="max-width:none">
+      <a class="brand" href="index.html"><span class="brand-mark">ف</span><span class="brand-text">عائلة فرح</span></a>
+      <nav class="nav">
+        <a href="index.html">الرئيسية</a>
+        <a href="tree.html" class="active">شجرة العائلة</a>
+      </nav>
+      <div class="auth-area" id="auth-area"></div>
+    </div>
+  </header>
+
+  <div class="tree-layout">
+    <div class="tree-main">
+      <div class="toolbar">
+        <div class="search-box">
+          <input id="search" type="search" placeholder="ابحث بالاسم، أو الاسم واسم الأب: زهير أديب" autocomplete="off" aria-label="بحث">
+          <ul class="search-results" id="search-results" hidden></ul>
+        </div>
+        <span class="search-hint">اكتب الاسم ثم اسم الأب والجد للتمييز</span>
+        <div class="toolbar-group">
+          <button class="btn btn-ghost btn-sm" id="expand-all" title="عرض كل الأجيال">توسيع الكل</button>
+          <button class="btn btn-ghost btn-sm" id="collapse-all" title="طيّ الشجرة">طيّ</button>
+          <button class="btn btn-ghost btn-icon" id="zoom-in" title="تكبير" aria-label="تكبير">+</button>
+          <button class="btn btn-ghost btn-icon" id="zoom-out" title="تصغير" aria-label="تصغير">−</button>
+          <button class="btn btn-ghost btn-icon" id="zoom-fit" title="ملاءمة الشاشة" aria-label="ملاءمة الشاشة">⤢</button>
+        </div>
+      </div>
+      <div class="tree-canvas" id="tree-canvas">
+        <div class="tree-status" id="tree-status">جارٍ تحميل الشجرة…</div>
+      </div>
+    </div>
+    <aside class="panel" id="panel" aria-live="polite"></aside>
+  </div>
+
+  <div class="modal-backdrop" id="person-modal">
+    <form class="modal" id="person-form">
+      <h2 id="person-form-title">إضافة فرد</h2>
+      <p class="muted" id="person-form-sub"></p>
+      <div class="form-row"><label for="f-name">الاسم *</label><input id="f-name" name="name" required maxlength="80"></div>
+      <div class="form-2col">
+        <div class="form-row"><label for="f-sex">الجنس</label>
+          <select id="f-sex" name="sex"><option value="M">ذكر</option><option value="F">أنثى</option><option value="U">غير محدد</option></select></div>
+        <div class="form-row"><label for="f-mother">اسم الأم</label><input id="f-mother" name="mother_name" maxlength="80"></div>
+      </div>
+      <div class="form-2col">
+        <div class="form-row"><label for="f-birth">تاريخ الميلاد</label><input id="f-birth" name="birth_date" placeholder="مثال: 1950" maxlength="40"></div>
+        <div class="form-row"><label for="f-death">تاريخ الوفاة</label><input id="f-death" name="death_date" maxlength="40"></div>
+      </div>
+      <div class="form-row"><label for="f-place">مكان الميلاد</label><input id="f-place" name="birth_place" maxlength="80"></div>
+      <div class="form-row"><label for="f-notes">ملاحظات</label><textarea id="f-notes" name="notes" rows="3" maxlength="2000"></textarea></div>
+      <div class="form-error" id="person-error"></div>
+      <div class="form-actions">
+        <button type="button" class="btn btn-ghost" data-close>إلغاء</button>
+        <button type="submit" class="btn">حفظ</button>
+      </div>
+    </form>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.49.4/dist/umd/supabase.min.js"></script>
+  <script src="js/config.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/ui.js"></script>
+  <script src="js/tree.js"></script>
+</body>
+</html>

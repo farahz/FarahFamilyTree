@@ -45,6 +45,8 @@ python -m http.server 8000
 Push to GitHub, then go to **Settings → Pages → Deploy from a branch → `main` / root**.
 The site will be at `https://<user>.github.io/<repo>/`.
 
+**Current page URL:** https://farahz.github.io/FarahFamilyTree/
+
 ## Arabic / English
 
 Every page has a language button in the header (`English` / `عربي`). The choice is remembered in the

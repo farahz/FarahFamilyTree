@@ -260,16 +260,29 @@
   // ---------- Add / edit / delete ----------
   const form = document.getElementById('person-form');
   const formError = document.getElementById('person-error');
-  const formFields = () => ['name', ...(idx.hasNameEn ? ['name_en'] : []),
+  const formFields = () => ['name', ...(idx.hasAltName ? [FD.altField] : []),
     'sex', 'mother_name', 'birth_date', 'death_date', 'birth_place', 'notes'];
   let formMode = 'add';
+
+  // The main name field is in the dataset's language; the optional second one is the other language.
+  const nameIsArabic = FD.dataset.nameLang === 'ar';
+  const altInput = document.getElementById('f-name-alt');
+  altInput.name = FD.altField;
+  altInput.dir = nameIsArabic ? 'ltr' : 'rtl';
+  document.getElementById('f-name').dir = nameIsArabic ? 'rtl' : 'ltr';
+  [['f-name-label', nameIsArabic ? 'f_name' : 'f_name_latin'],
+    ['f-name-alt-label', nameIsArabic ? 'f_name_en' : 'f_name_ar']].forEach(([id, key]) => {
+    const el = document.getElementById(id);
+    el.dataset.i18n = key;
+    el.textContent = L.t(key);
+  });
 
   function openForm(mode) {
     formMode = mode;
     const p = idx.byId.get(selectedId);
     form.reset();
     formError.textContent = '';
-    document.getElementById('name-en-row').hidden = !idx.hasNameEn;
+    document.getElementById('name-alt-row').hidden = !idx.hasAltName;
     document.getElementById('person-form-title').textContent = L.t(mode === 'add' ? 'form_add' : 'form_edit');
     document.getElementById('person-form-sub').textContent =
       mode === 'add' ? L.t('form_father', { name: idx.lineageName(p.id, 3) }) : idx.lineageName(p.id, 3);

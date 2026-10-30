@@ -12,10 +12,11 @@
     return;
   }
 
-  // The family is named after the first "فرح" in the line.
+  // The family is named after the first person called like the dataset's `founder` (Farah) in the line.
   const depth = (p) => idx.ancestors(p.id).length;
+  const founderName = window.FamilyData.normalize(window.FamilyData.dataset.founder);
   const founder = idx.persons
-    .filter((p) => window.FamilyData.normalize(p.name) === 'فرح')
+    .filter((p) => window.FamilyData.normalize(p.name) === founderName)
     .sort((a, b) => depth(a) - depth(b))[0] || idx.roots[0];
 
   const branches = [];

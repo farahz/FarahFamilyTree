@@ -80,6 +80,8 @@ button { font: inherit; cursor: pointer; }
 .btn-danger { background: transparent; color: var(--danger); border-color: #e8c4bc; }
 .btn-danger:hover { background: #fbeeea; }
 .btn-sm { padding: 5px 10px; font-size: 14px; border-radius: 8px; }
+.tree-select { padding: 5px 8px; font: inherit; font-size: 14px; color: var(--cedar-dark); background: transparent; border: 1px solid var(--stone-200); border-radius: 8px; cursor: pointer; }
+.tree-select:hover { background: var(--stone-100); }
 .btn-icon { width: 36px; height: 36px; padding: 0; font-size: 18px; }
 
 /* Hero */

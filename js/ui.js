@@ -1,7 +1,8 @@
 // Header auth controls, language switch, login modal, demo notice and toasts shared by all pages.
 (function () {
   const FD = window.FamilyData;
-  const { t } = window.I18N;
+  const { t, lang } = window.I18N;
+  const cfg = window.FARAH_CONFIG;
   let currentUser = null;
   const listeners = [];
 
@@ -69,15 +70,18 @@
     const area = document.getElementById('auth-area');
     if (!area) return;
     const langBtn = `<button class="btn btn-ghost btn-sm lang-toggle" id="lang-btn">${t('lang_switch')}</button>`;
+    const treeSel = `<select class="tree-select" id="tree-select" title="${t('tree_switch')}" aria-label="${t('tree_switch')}">${
+      cfg.datasets.map((d) => `<option value="${d.key}"${d.key === FD.dataset.key ? ' selected' : ''}>${esc(d.label[lang])}</option>`).join('')
+    }</select>`;
     if (currentUser) {
-      area.innerHTML = `${langBtn}<span class="auth-user" title="${esc(currentUser.email)}">${esc(currentUser.email)}</span>
+      area.innerHTML = `${treeSel}${langBtn}<span class="auth-user" title="${esc(currentUser.email)}">${esc(currentUser.email)}</span>
         <button class="btn btn-ghost btn-sm" id="logout-btn">${t('logout')}</button>`;
       document.getElementById('logout-btn').onclick = async () => {
         await FD.auth.signOut();
         toast(t('logged_out'));
       };
     } else {
-      area.innerHTML = `${langBtn}<button class="btn btn-sm" id="login-btn">${t('login')}</button>`;
+      area.innerHTML = `${treeSel}${langBtn}<button class="btn btn-sm" id="login-btn">${t('login')}</button>`;
       document.getElementById('login-btn').onclick = () => {
         if (!FD.live) return toast(t('demo_no_edit'));
         openModal('login-modal');
@@ -85,6 +89,13 @@
       };
     }
     document.getElementById('lang-btn').onclick = window.I18N.switchLang;
+    document.getElementById('tree-select').onchange = (e) => {
+      // Person ids differ between datasets, so drop any selected person / search from the URL.
+      const url = new URL(location.href);
+      ['id', 'q'].forEach((k) => url.searchParams.delete(k));
+      url.searchParams.set('tree', e.target.value);
+      location.href = url.toString();
+    };
   }
 
   function setUser(u) {

@@ -1,27 +1,36 @@
 // Shared data access (Supabase or the bundled demo JSON), auth and family-tree helpers.
 (function () {
   const cfg = window.FARAH_CONFIG || {};
+  const ds = window.FARAH_DATASET;
   const live = !!(cfg.supabaseUrl && cfg.supabaseAnonKey && window.supabase);
   const sb = live ? window.supabase.createClient(cfg.supabaseUrl, cfg.supabaseAnonKey) : null;
+  let usingDb = live; // false once the dataset's table is missing and the bundled JSON is used instead
 
   const BASE_FIELDS = 'id,name,sex,father_id,mother_name,birth_date,death_date,birth_place,notes,photo_url';
-  // name_en is added by supabase/002_name_en.sql; until then the query falls back to BASE_FIELDS.
-  let fields = BASE_FIELDS + ',name_en';
-  const { t, displayName, nameEn } = window.I18N;
+  // The alternate-language name column (name_en / name_ar) may not exist yet (see supabase/002_name_en.sql);
+  // until then the query falls back to BASE_FIELDS.
+  let fields = BASE_FIELDS + ',' + ds.altField;
+  const { t, displayName, nameEn, nameAr } = window.I18N;
+
+  async function loadJson() {
+    const res = await fetch(ds.json);
+    if (!res.ok) throw new Error(t('load_failed'));
+    return res.json();
+  }
 
   async function loadPersons() {
-    if (!live) {
-      const res = await fetch('data/family.json');
-      if (!res.ok) throw new Error(t('load_failed'));
-      return res.json();
-    }
+    if (!usingDb) return loadJson();
     const all = [];
     const page = 1000;
     for (let from = 0; ; from += page) {
-      const { data, error } = await sb.from('persons').select(fields).order('id').range(from, from + page - 1);
+      const { data, error } = await sb.from(ds.table).select(fields).order('id').range(from, from + page - 1);
       if (error && error.code === '42703' && fields !== BASE_FIELDS) {
         fields = BASE_FIELDS; // column does not exist
         return loadPersons();
+      }
+      if (error && (error.code === '42P01' || error.code === 'PGRST205')) {
+        usingDb = false; // table not created yet: show the bundled data, read-only
+        return loadJson();
       }
       if (error) throw error;
       all.push(...data);
@@ -31,26 +40,26 @@
   }
 
   function requireLive() {
-    if (!live) throw new Error(t('read_only'));
+    if (!usingDb) throw new Error(t('read_only'));
   }
 
   async function addPerson(person) {
     requireLive();
-    const { data, error } = await sb.from('persons').insert(person).select(fields).single();
+    const { data, error } = await sb.from(ds.table).insert(person).select(fields).single();
     if (error) throw error;
     return data;
   }
 
   async function updatePerson(id, patch) {
     requireLive();
-    const { data, error } = await sb.from('persons').update(patch).eq('id', id).select(fields).single();
+    const { data, error } = await sb.from(ds.table).update(patch).eq('id', id).select(fields).single();
     if (error) throw error;
     return data;
   }
 
   async function deletePerson(id) {
     requireLive();
-    const { error } = await sb.from('persons').delete().eq('id', id);
+    const { error } = await sb.from(ds.table).delete().eq('id', id);
     if (error) throw error;
   }
 
@@ -139,9 +148,9 @@
       for (const p of persons) {
         const chain = ancestors(p.id);
         if (chain.length < tokens.length) continue;
-        const matches = (tok, q) => normalize(q.name).includes(tok) || normalize(nameEn(q)).includes(tok);
+        const matches = (tok, q) => normalize(q.name).includes(tok) || normalize(nameEn(q)).includes(tok) || normalize(nameAr(q)).includes(tok);
         if (tokens.every((tok, i) => matches(tok, chain[i]))) {
-          const exact = normalize(p.name) === tokens[0] || normalize(nameEn(p)) === tokens[0] ? 0 : 1;
+          const exact = [p.name, nameEn(p), nameAr(p)].some((n) => normalize(n) === tokens[0]) ? 0 : 1;
           results.push({ person: p, score: exact * 1000 + chain.length });
         }
       }
@@ -151,11 +160,11 @@
 
     const generations = Math.max(0, ...persons.map((p) => ancestors(p.id).length));
 
-    // name_en is editable only once supabase/002_name_en.sql has added the column.
-    const hasNameEn = persons.length > 0 && 'name_en' in persons[0];
+    // The alternate-name column is editable only once it exists in the table.
+    const hasAltName = persons.length > 0 && ds.altField in persons[0];
 
-    return { persons, byId, children, roots, ancestors, descendantCount, lineageName, search, generations, hasNameEn };
+    return { persons, byId, children, roots, ancestors, descendantCount, lineageName, search, generations, hasAltName };
   }
 
-  window.FamilyData = { live, loadPersons, addPerson, updatePerson, deletePerson, auth, normalize, buildIndex };
+  window.FamilyData = { live, dataset: ds, altField: ds.altField, loadPersons, addPerson, updatePerson, deletePerson, auth, normalize, buildIndex };
 })();

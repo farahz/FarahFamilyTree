@@ -7,6 +7,7 @@
       nav_home: 'الرئيسية',
       nav_tree: 'شجرة العائلة',
       lang_switch: 'English',
+      tree_switch: 'نسخة الشجرة',
       login: 'دخول',
       logout: 'خروج',
       demo_banner: 'نسخة تجريبية — البيانات للعرض فقط',
@@ -90,6 +91,8 @@
       form_father: 'الأب: {name}',
       f_name: 'الاسم *',
       f_name_en: 'الاسم بالإنجليزية',
+      f_name_latin: 'الاسم بالإنجليزية *',
+      f_name_ar: 'الاسم بالعربية',
       f_sex: 'الجنس',
       f_unknown: 'غير محدد',
       f_mother: 'اسم الأم',
@@ -111,6 +114,7 @@
       nav_home: 'Home',
       nav_tree: 'Family Tree',
       lang_switch: 'عربي',
+      tree_switch: 'Tree version',
       login: 'Log in',
       logout: 'Log out',
       demo_banner: 'Demo version — data is view-only',
@@ -194,6 +198,8 @@
       form_father: 'Father: {name}',
       f_name: 'Name (Arabic) *',
       f_name_en: 'Name in English',
+      f_name_latin: 'Name (English) *',
+      f_name_ar: 'Name in Arabic',
       f_sex: 'Sex',
       f_unknown: 'Unknown',
       f_mother: "Mother's name",
@@ -263,6 +269,85 @@
     'الخوري': 'Father', 'القلزي': 'al-Qalazi', 'المكنى': 'nicknamed', 'بالدردبا': 'al-Dardaba', 'الله': 'Allah',
   };
 
+  // English -> Arabic for datasets whose names are written in English (keys lower-case).
+  // Unknown words are left as they are; a person's own name_ar value overrides this.
+  const AR_WORDS = {
+    "a'del": 'عادل', "a'lia": 'عاليا', abdallah: 'عبدالله', abdullah: 'عبدالله', abeer: 'عبير', abla: 'عبلة',
+    adel: 'عادل', adela: 'أديلا', adele: 'أديل', adib: 'أديب', adibe: 'أديبة', adnan: 'عدنان', afaf: 'عفاف',
+    afif: 'عفيف', afife: 'عفيفة', al: '', alaa: 'علاء', alan: 'آلان', albert: 'ألبرت', alex: 'أليكس',
+    alfred: 'ألفريد', alice: 'أليس', amal: 'أمل', amani: 'أماني', amin: 'أمين', amir: 'أمير', amira: 'أميرة',
+    anan: 'عنان', andrew: 'أندرو', angela: 'أنجيلا', anthos: 'أنثوس', anton: 'أنطون', antonio: 'أنطونيو',
+    anwar: 'أنور', areen: 'أرين', arij: 'أريج', arthur: 'آرثر', "asa'ad": 'أسعد', asaad: 'أسعد', asma: 'أسماء',
+    assil: 'أصيل', athena: 'أثينا', austin: 'أوستن', awni: 'عوني', awwad: 'عواد', ayda: 'عايدة', ayman: 'أيمن',
+    ayoub: 'أيوب', azar: 'عازر', aziz: 'عزيز', azmi: 'عزمي', badie: 'بديع', badira: 'بديرة', bashir: 'بشير',
+    bassam: 'بسام', bassem: 'باسم', bassil: 'باسل', bassila: 'باسيلا', ben: 'بن', benjamin: 'بنيامين',
+    bishara: 'بشارة', botros: 'بطرس', boulos: 'بولس', carol: 'كارول', caroline: 'كارولين', christina: 'كريستينا',
+    christine: 'كريستين', christopher: 'كريستوفر', cindy: 'سيندي', clara: 'كلارا', constantine: 'قسطنطين',
+    coral: 'كورال', costandi: 'قسطندي', cynthia: 'سينثيا', damien: 'داميان', dana: 'دانا', daniel: 'دانيال',
+    david: 'ديفيد', deeb: 'ديب', diab: 'ذياب', dima: 'ديمة', dina: 'دينا', donald: 'دونالد', edmond: 'إدمون',
+    edward: 'إدوارد', ehab: 'إيهاب', el: '', elaine: 'إيلين', eli: 'إيلي', elia: 'إيليا', elianor: 'إليانور',
+    elias: 'إلياس', emil: 'إميل', emile: 'إميل', enas: 'إيناس', ernesto: 'إرنستو', evelyn: 'إيفلين',
+    faddoul: 'فضول', fadel: 'فضل', fadi: 'فادي', fadia: 'فادية', fahim: 'فهيم', farah: 'فرح', fareed: 'فريد',
+    fares: 'فارس', farouq: 'فاروق', faten: 'فاتن', fatinah: 'فتينة', fawzi: 'فوزي', fayez: 'فايز',
+    fayzeh: 'فايزة', fernando: 'فرناندو', feryal: 'فريال', feyrouz: 'فيروز', fifi: 'فيفي', fihmi: 'فهمي',
+    fouad: 'فؤاد', franco: 'فرانكو', francois: 'فرانسوا', gabriel: 'جبرائيل', george: 'جورج', georges: 'جورج',
+    georgette: 'جورجيت', georgy: 'جرجي', ghassan: 'غسان', ghena: 'غنى', gisele: 'جيزيل', gomana: 'جمانة',
+    greg: 'غريغ', habib: 'حبيب', hadeel: 'هديل', haifa: 'هيفاء', haisen: 'هيسن', hala: 'هالة', halim: 'حليم',
+    hanan: 'حنان', hani: 'هاني', hania: 'هانية', hanna: 'حنا', hasan: 'حسن', haytham: 'هيثم', hector: 'هيكتور',
+    helane: 'هيلان', helen: 'هيلين', hiam: 'هيام', hiba: 'هبة', hillario: 'هيلاريو', hind: 'هند', husni: 'حسني',
+    hussein: 'حسين', ibrahim: 'إبراهيم', ibtihaj: 'ابتهاج', ikhlas: 'إخلاص', ikram: 'إكرام', imade: 'عماد',
+    iman: 'إيمان', imtanis: 'إمطانس', inaam: 'إنعام', inaia: 'عناية', insaf: 'إنصاف', irfan: 'عرفان',
+    ishaq: 'إسحق', iskandar: 'إسكندر', itaf: 'عطاف', jaber: 'جابر', jackline: 'جاكلين', jacob: 'يعقوب',
+    jaki: 'جاكي', james: 'جيمس', jamal: 'جمال', jameel: 'جميل', jamileh: 'جميلة', jan: 'جان', jason: 'جيسون', jawdat: 'جودت',
+    jeff: 'جيف', jenna: 'جينا', jeries: 'جريس', jiries: 'جريس', jihan: 'جيهان', joleen: 'جولين', jolie: 'جولي',
+    john: 'جون', jonathan: 'جوناثان', joseph: 'جوزيف', joud: 'جود', joul: 'جول', joulia: 'جوليا', jouna: 'جونا',
+    joyce: 'جويس', jr: 'الابن', juan: 'خوان', jubran: 'جبران', julia: 'جوليا', kamal: 'كمال', kamel: 'كامل',
+    kamil: 'كميل', kamilia: 'كاميليا', kamle: 'كاملة', karam: 'كرم', karen: 'كارين', kari: 'كاري', katie: 'كيتي',
+    katrina: 'كاترينا', kawkab: 'كوكب', kawthar: 'كوثر', kenneth: 'كينيث', ketty: 'كيتي', khalil: 'خليل',
+    khlief: 'خليف', khoury: 'الخوري', kim: 'كيم', labeeb: 'لبيب', labib: 'لبيب', laia: 'لايا', laila: 'ليلى',
+    lama: 'لمى', lamita: 'لاميتا', laura: 'لورا', layal: 'ليال', layla: 'ليلى', leen: 'لين', leena: 'لينا',
+    lilia: 'ليليا', lily: 'ليلي', lindsey: 'ليندسي', liz: 'ليز', loai: 'لؤي', lotfi: 'لطفي', lotof: 'لطف',
+    lotofallah: 'لطف الله', louis: 'لويس', lourdi: 'لوردي', luca: 'لوكا', luisito: 'لويسيتو', lydia: 'ليديا',
+    madline: 'مادلين', maha: 'مها', mahasen: 'محاسن', maher: 'ماهر', mai: 'مي', majd: 'مجد', makram: 'مكرم',
+    manadil: 'مناديل', manal: 'منال', mansour: 'منصور', manuolo: 'مانويلو', maria: 'ماريا', mariam: 'مريم',
+    marian: 'ماريان', marilyn: 'ماريلين', mario: 'ماريو', mark: 'مارك', marvet: 'مرفت', marwan: 'مروان',
+    mary: 'ماري', max: 'ماكس', mazen: 'مازن', mervat: 'مرفت', "mesa'ade": 'مساعدة', mhareb: 'محارب',
+    michael: 'ميخائيل', micheal: 'ميخائيل', michal: 'ميشال', michelle: 'ميشيل', miguel: 'ميغيل', mike: 'مايك',
+    milad: 'ميلاد', mildred: 'ميلدريد', mirai: 'ميراي', miriam: 'ميريام', mirna: 'ميرنا', mishleen: 'ميشلين',
+    mona: 'منى', mounir: 'منير', mousa: 'موسى', mozayan: 'مزين', muna: 'منى', name: 'بدون اسم', munir: 'منير', nabiha: 'نبيهة',
+    nader: 'نادر', nadia: 'نادية', nadim: 'نديم', nadimeh: 'نديمة', nadine: 'نادين', nadwa: 'ندوى',
+    naeem: 'نعيم', nael: 'نائل', nagib: 'نجيب', naheel: 'ناهل', nahel: 'ناهل', naim: 'نعيم', naime: 'نعيمة',
+    naji: 'ناجي', najla: 'نجلاء', najwan: 'نجوان', nancy: 'نانسي', narmeen: 'نرمين', nasrallah: 'نصرالله',
+    nasser: 'ناصر', nassif: 'ناصيف', nassim: 'نسيم', natalie: 'ناتالي', nataly: 'ناتالي', nawal: 'نوال',
+    nayef: 'نايف', nayela: 'نايلة', nayfe: 'نايفة', nazario: 'نازاريو', nazeer: 'نظير', nelly: 'نيللي',
+    nelson: 'نيلسون', neman: 'نعمان', neme: 'نعمة', neveen: 'نيفين', nicole: 'نيكول', nimer: 'نمر', nina: 'نينا',
+    niqoola: 'نقولا', niveen: 'نيفين', nour: 'نور', nuha: 'نهى', odeh: 'عودة', ola: 'علا', omar: 'عمر',
+    ophalia: 'أوفيليا', owen: 'أوين', paul: 'بول', paulina: 'بولينا', peter: 'بيتر', qalazi: 'القلزي',
+    rabie: 'ربيع', rafik: 'رفيق', rafiq: 'رفيق', ragheb: 'راغب', rahije: 'راحية', raji: 'راجي', rami: 'رامي',
+    ramon: 'رامون', ramzi: 'رمزي', rana: 'رنا', randa: 'رندة', rani: 'راني', rania: 'رانيا', raouf: 'رؤوف',
+    rasmieh: 'رسمية', rawan: 'روان', rayek: 'رايق', reem: 'ريم', riad: 'رياض', rima: 'ريما', rina: 'رينا',
+    rizik: 'رزق', riziq: 'رزق', robert: 'روبرت', roberto: 'روبرتو', rogeh: 'روجيه', rolando: 'رولاندو',
+    ronald: 'رونالد', ronan: 'رونان', ronza: 'رونزا', rose: 'روز', roumie: 'رومي', roxy: 'روكسي', roy: 'روي',
+    ruba: 'ربى', ruben: 'روبين', rula: 'رلى', saad: 'سعد', saba: 'سابا', sabine: 'سابين', "sae'd": 'سعيد',
+    saher: 'ساهر', said: 'سعيد', saleh: 'صالح', saliba: 'صليبا', salim: 'سليم', salma: 'سلمى', salwa: 'سلوى',
+    sama: 'سما', samantha: 'سامانثا', samar: 'سمر', samer: 'سامر', sami: 'سامي', samia: 'سامية', samih: 'سميح',
+    samir: 'سمير', samira: 'سميرة', sanaa: 'سناء', sandra: 'ساندرا', sarah: 'سارة', sawsan: 'سوسن',
+    shaden: 'شادن', shadi: 'شادي', shadia: 'شادية', shafiq: 'شفيق', shahira: 'شهيرة', shaza: 'شذى',
+    shibly: 'شبلي', shihade: 'شحادة', shireen: 'شيرين', shirin: 'شيرين', shukri: 'شكري', sileen: 'سيلين',
+    silvia: 'سيلفيا', sima: 'سيما', simaan: 'سمعان', skylar: 'سكايلر', sleeman: 'سليمان', soad: 'سعاد',
+    souria: 'سورية', souzan: 'سوزان', staci: 'ستايسي', stephan: 'ستيفان', subhi: 'صبحي', suha: 'سهى',
+    suhail: 'سهيل', suhaila: 'سهيلة', suhier: 'زهير', summer: 'سمر', tala: 'تالا', tamara: 'تمارا',
+    tanas: 'طناس', tannous: 'طنوس', teddy: 'تدي', timothy: 'تيموثي', tony: 'طوني', toufiq: 'توفيق',
+    touleen: 'تولين', troy: 'تروي', ussama: 'أسامة', vera: 'فيرا', victor: 'فكتور', victoria: 'فيكتوريا',
+    vivian: 'فيفيان', wadie: 'وديع', wael: 'وائل', wafaa: 'وفاء', walid: 'وليد', ward: 'ورد', warde: 'وردة',
+    wassef: 'واصف', wassim: 'وسيم', widad: 'وداد', wilfrado: 'ويلفريدو', william: 'ويليم', wissam: 'وسام',
+    yaacoub: 'يعقوب', yacoub: 'يعقوب', yana: 'يانا', yanil: 'يانيل', yara: 'يارا', yasmin: 'ياسمين',
+    youhana: 'يوحنا', yousef: 'يوسف', yousra: 'يسرى', youssef: 'يوسف', yvonne: 'إيفون', zaher: 'زاهر',
+    zahi: 'زاهي', zalfa: 'زلفا', zander: 'زاندر', zein: 'زين', zena: 'زينة', ziad: 'زياد', zuhair: 'زهير',
+    zuheir: 'زهير',
+  };
+
+
   function detect() {
     const fromUrl = new URLSearchParams(location.search).get('lang');
     if (fromUrl === 'en' || fromUrl === 'ar') return fromUrl;
@@ -273,6 +358,9 @@
     return 'ar';
   }
 
+  // Active dataset (see js/config.js): the language its `name` column is written in.
+  const ds = window.FARAH_DATASET || { nameLang: 'ar' };
+
   const lang = detect();
   try { localStorage.setItem('farah-lang', lang); } catch (e) { /* storage unavailable */ }
 
@@ -282,7 +370,14 @@
     return s;
   }
 
+  function nameAr(p) {
+    if (ds.nameLang === 'ar') return p.name;
+    if (p.name_ar) return p.name_ar;
+    return (p.name || '').trim().split(/\s+/).map((w) => AR_WORDS[w.toLowerCase()] ?? w).filter(Boolean).join(' ');
+  }
+
   function nameEn(p) {
+    if (ds.nameLang === 'en') return (p.name || '').trim();
     if (p.name_en) return p.name_en;
     const name = (p.name || '').trim();
     if (NAME_PHRASES[name]) return NAME_PHRASES[name];
@@ -290,7 +385,7 @@
   }
 
   function displayName(p) {
-    return lang === 'en' ? nameEn(p) : p.name;
+    return lang === 'en' ? nameEn(p) : nameAr(p);
   }
 
   function num(n) {
@@ -316,6 +411,6 @@
     location.href = url.toString();
   }
 
-  window.I18N = { lang, t, nameEn, displayName, num, apply, switchLang };
+  window.I18N = { lang, t, nameEn, nameAr, displayName, num, apply, switchLang };
   apply();
 })();

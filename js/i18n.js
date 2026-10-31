@@ -37,7 +37,7 @@
         '<p>وكان لعبد الله من الابناء أربعة: فرح (جدنا), خليف, نمر ومحارب. تتعدد الروايات حول أبناء أخرين له. أما نمر, فنسله اليوم هم عشيرة النمورة في بلدة الحصن (التابعة لمحافظة إربد), وتعتبر من أكبر وأقدم العشائر المسيحية هناك. وأما محارب فقد أسلم, ويعرف نسله بعشيرة العيل, ويقال أنهم إنضموا إلى الغزاوية.</p>' +
         '<p>أما عبدالله وإبنيه فرح وخليف, فهجروا صخرة إلى جوار جبل الطور (تابور), وبعد ذلك إستوطنوا قرية الشجرة ومن هناك قدموا أخيرًا إلى الناصرة. وأما نسل فرح فهم دار فرح في الناصرة, إحدى أقدم وأكبر العائلات المسيحية, وقد هاجر العديد من افراد العائلة خارج البلاد ونسلهم يتواجد اليوم في العديد من دول العالم, بالاخص مدينة فلينت في ولاية ميشيغان الامريكية.</p>' +
         '<p>وأما نسل خليف فهم حمولة الخليفية بالناصرة وتضم أكثر من عشرة عائلات. ويدعي نسل القلزي نسبًا غسانيًا, مع أن لا إثبات مباشر لذلك.</p>',
-      about_byline: 'ميخائيل فرح – الناصرة',
+      about_byline: 'ميخائيل أمين فرح – الناصرة',
       about_caption: 'مكان مخصص لصورة العائلة',
       stats_title: 'العائلة بالأرقام',
       stat_persons: 'فرداً موثّقاً',
@@ -144,7 +144,7 @@
         '<p>Abdullah had 4 sons: Farah (Our Ancestor), Khlief, Nimer and Muhareb. There are accounts stating he had more sons. The descendants of Nimer are the Nmura Clan in the city of Hosn (Irbid District), and is considered one of the oldest and biggest Christian families there. Muhareb converted to Islam, and his descendants are known as Al-Iyal Clan, and it is said that they have joined the Ghazzawiya.</p>' +
         '<p>Abdullah and his sons Farah and Khlief left Sakhra to live near Mount Tabor, then to Al-Shajara village, from there they finally came to Nazareth. The descendants of Farah are the Farah Family in Nazareth, one of the oldest and biggest Christian families, and many family members has since left Nazareth, and their descendants live now in many countries worldwide, especially Flint, Michigan USA.</p>' +
         '<p>The descendants of Khlief are known as Khliefiyye, and they comprise more than ten families in Nazareth. The descendants of Abdullah Al-Qalazi claim descent to Ghassanid Arabs, though no direct proof exists.</p>',
-      about_byline: 'Michael Farah – Nazareth',
+      about_byline: 'Michael Amin Farah – Nazareth',
       about_caption: 'Reserved for a family photo',
       stats_title: 'The Family in Numbers',
       stat_persons: 'recorded members',

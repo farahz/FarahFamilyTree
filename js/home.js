@@ -12,6 +12,8 @@
     return;
   }
 
+  if (!idx.persons.length) return;
+
   // The family is named after the first person called like the dataset's `founder` (Farah) in the line.
   const depth = (p) => idx.ancestors(p.id).length;
   const founderName = window.FamilyData.normalize(window.FamilyData.dataset.founder);

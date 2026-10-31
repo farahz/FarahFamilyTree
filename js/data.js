@@ -139,18 +139,24 @@
         .join(' ');
     }
 
+    const keyCache = new Map(); // id -> normalized [name, English name, Arabic name]
+
     // "زهير اديب" / "zuhier adib" finds Zuhier whose father is Adib: token i must match ancestor i,
     // in either the Arabic or the English form of the name.
     function search(query, limit = 30) {
       const tokens = normalize(query).split(' ').filter(Boolean);
       if (!tokens.length) return [];
       const results = [];
+      const keys = (q) => {
+        let k = keyCache.get(q.id);
+        if (!k) keyCache.set(q.id, (k = [q.name, nameEn(q), nameAr(q)].map(normalize)));
+        return k;
+      };
       for (const p of persons) {
         const chain = ancestors(p.id);
         if (chain.length < tokens.length) continue;
-        const matches = (tok, q) => normalize(q.name).includes(tok) || normalize(nameEn(q)).includes(tok) || normalize(nameAr(q)).includes(tok);
-        if (tokens.every((tok, i) => matches(tok, chain[i]))) {
-          const exact = [p.name, nameEn(p), nameAr(p)].some((n) => normalize(n) === tokens[0]) ? 0 : 1;
+        if (tokens.every((tok, i) => keys(chain[i]).some((k) => k.includes(tok)))) {
+          const exact = keys(p).some((k) => k === tokens[0]) ? 0 : 1;
           results.push({ person: p, score: exact * 1000 + chain.length });
         }
       }

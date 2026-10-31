@@ -12,6 +12,8 @@ window.FARAH_CONFIG = {
   supabaseUrl: 'https://dmacifguvdyvpkgfgbcp.supabase.co',
   supabaseAnonKey: 'sb_publishable_xbPrg0-LWV-QNGOSXWxIDQ_PlT-bnMz',
   defaultDataset: '480',
+  // Home page slideshow: every image in this folder of the GitHub repo (listed through the GitHub API).
+  photos: { repo: 'farahz/FarahFamilyTree', path: 'assets/photos' },
   datasets: [
     {
       key: '480', table: 'persons', json: 'data/family.json',

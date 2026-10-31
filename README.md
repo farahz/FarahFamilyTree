@@ -8,6 +8,8 @@ Family website with an interactive family tree, built from two GEDCOM files (two
 - Without a Supabase key the site runs in **read-only demo mode** from `data/family.json`
 - **Phone friendly**: one-row header and tree toolbar (icon buttons, pinch to zoom), the tree opens at a
   readable zoom with the root at the screen edge, and person details slide up as a bottom sheet
+- **Photo slideshow** in the history section: every image uploaded to `assets/photos/` on GitHub is shown
+  (listed through the public GitHub API, so no file list to maintain), with swipe, arrows and a full-screen view
 
 ## Structure
 
@@ -19,9 +21,11 @@ Family website with an interactive family tree, built from two GEDCOM files (two
 | `js/data.js` | Data loading, auth, search (Arabic-normalized), lineage helpers |
 | `js/ui.js` | Header login/logout, login modal, toasts |
 | `js/home.js`, `js/tree.js` | Page logic |
+| `js/gallery.js` | Home page photo slideshow + full-screen viewer for the images in `assets/photos/` |
 | `css/style.css` | All styles |
 | `assets/farah-family.jpg` | Home page banner (family photo collage) |
-| `assets/banner.svg` | Nazareth illustration used in the history section |
+| `assets/banner.svg` | Nazareth illustration in the history section, shown until photos are added |
+| `assets/photos/` | Family photos for the slideshow: upload images here on GitHub (see its README) |
 | `supabase/schema.sql` | Table + Row Level Security policies |
 | `supabase/seed.sql` | The 480 people from the GEDCOM file |
 | `supabase/003_persons_799.sql`, `seed-799.sql` | Table and data for the 799 dataset |

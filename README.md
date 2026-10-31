@@ -11,6 +11,8 @@ Family website with an interactive family tree, built from two GEDCOM files (two
 - **Photo slideshow** in the history section: every image uploaded to `assets/photos/` on GitHub is shown
   (listed through the public GitHub API, so no file list to maintain), with swipe, arrows and a full-screen view;
   a same-named `.txt` file adds a title and story shown under the photo in the full-screen view
+- **Visitor statistics** with GoatCounter (no cookies): visits per page, countries, referrers and devices at
+  https://farahfamily.goatcounter.com — local visits (localhost) are not counted
 
 ## Structure
 

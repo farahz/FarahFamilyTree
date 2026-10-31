@@ -16,7 +16,7 @@
     <div class="container" style="max-width:none">
       <a class="brand" href="index.html"><span class="brand-mark">ف</span><span class="brand-text" data-i18n="brand">عائلة فرح</span></a>
       <nav class="nav">
-        <a href="index.html" data-i18n="nav_home">الرئيسية</a>
+        <a href="index.html" class="nav-home" data-i18n="nav_home">الرئيسية</a>
         <a href="tree.html" class="active" data-i18n="nav_tree">شجرة العائلة</a>
       </nav>
       <div class="auth-area" id="auth-area"></div>
@@ -32,11 +32,11 @@
         </div>
         <span class="search-hint" data-i18n="search_hint">اكتب الاسم ثم اسم الأب والجد للتمييز</span>
         <div class="toolbar-group">
-          <button class="btn btn-ghost btn-sm" id="expand-all" data-i18n-title="expand_all_tip"><span data-i18n="expand_all">توسيع الكل</span></button>
-          <button class="btn btn-ghost btn-sm" id="collapse-all" data-i18n-title="collapse_tip"><span data-i18n="collapse">طيّ</span></button>
-          <button class="btn btn-ghost btn-icon" id="zoom-in" data-i18n-title="zoom_in">+</button>
-          <button class="btn btn-ghost btn-icon" id="zoom-out" data-i18n-title="zoom_out">−</button>
-          <button class="btn btn-ghost btn-icon" id="zoom-fit" data-i18n-title="zoom_fit">⤢</button>
+          <button class="btn btn-ghost btn-sm" id="expand-all" data-i18n-title="expand_all_tip"><svg class="btn-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 9l5-5 5 5M7 15l5 5 5-5"/></svg><span class="btn-label" data-i18n="expand_all">توسيع الكل</span></button>
+          <button class="btn btn-ghost btn-sm" id="collapse-all" data-i18n-title="collapse_tip"><svg class="btn-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 4l5 5 5-5M7 20l5-5 5 5"/></svg><span class="btn-label" data-i18n="collapse">طيّ</span></button>
+          <button class="btn btn-ghost btn-icon zoom-btn" id="zoom-in" data-i18n-title="zoom_in">+</button>
+          <button class="btn btn-ghost btn-icon zoom-btn" id="zoom-out" data-i18n-title="zoom_out">−</button>
+          <button class="btn btn-ghost btn-icon" id="zoom-fit" data-i18n-title="zoom_fit"><svg class="btn-svg" viewBox="0 0 24 24" aria-hidden="true"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg></button>
         </div>
       </div>
       <div class="tree-canvas" id="tree-canvas">

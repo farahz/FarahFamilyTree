@@ -84,6 +84,7 @@ button { font: inherit; cursor: pointer; }
 .tree-select { padding: 5px 8px; font: inherit; font-size: 14px; color: var(--cedar-dark); background: transparent; border: 1px solid var(--stone-200); border-radius: 8px; cursor: pointer; }
 .tree-select:hover { background: var(--stone-100); }
 .btn-icon { width: 36px; height: 36px; padding: 0; font-size: 18px; }
+.btn-svg { width: 18px; height: 18px; flex-shrink: 0; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 
 /* Hero */
 .hero {
@@ -305,16 +306,39 @@ body.tree-page { height: 100vh; height: 100dvh; display: flex; flex-direction: c
 
 @media (max-width: 560px) {
   .brand-text { display: none; }
+  /* One-row header: the logo already links home, so drop the Home link and keep controls touch-sized. */
+  .site-header .container { flex-wrap: nowrap; gap: 6px; }
+  .brand-mark { width: 36px; height: 36px; font-size: 20px; }
+  .nav a { padding: 0 8px; min-height: 44px; display: inline-flex; align-items: center; }
+  .nav a.nav-home, .nav a.active { display: none; }
+  .auth-area { flex-wrap: nowrap; min-width: 0; }
+  .auth-area .btn-sm, .tree-select { min-height: 44px; }
+  /* Pinch zooms on touch screens, so the toolbar keeps search plus three icon buttons on one row. */
+  .toolbar { flex-wrap: nowrap; padding: 8px 12px; }
+  .search-box input { padding-block: 10px; }
+  .toolbar .btn-label, .zoom-btn { display: none; }
+  .toolbar .btn { width: 44px; height: 44px; padding: 0; }
+  .panel-header .btn-icon { width: 44px; height: 44px; flex-shrink: 0; }
+  .panel { padding-top: 24px; }
+  .panel::before {
+    content: ''; position: absolute; top: 8px; left: 50%; width: 40px; height: 4px; margin-left: -20px;
+    border-radius: 2px; background: var(--stone-200);
+  }
+  .person-link { padding: 8px 12px; }
+  .ancestry button { padding: 6px 0; }
   .hero { min-height: 440px; }
   .section { padding: 48px 0; }
   .cta { padding: 28px; }
   .form-2col { grid-template-columns: 1fr; }
   .auth-user { display: none; }
   .auth-area { gap: 4px; }
-  .tree-select { max-width: 110px; }
   .btn-sm { padding: 5px 8px; }
-  .search-box { min-width: 0; flex-basis: 100%; max-width: none; }
-  .toolbar-group { margin-inline-start: 0; flex-wrap: wrap; }
+  .search-box { min-width: 0; max-width: none; }
+  .toolbar-group { margin-inline-start: 0; flex-shrink: 0; }
   .hero-search { flex-wrap: wrap; }
   .origin-step { font-size: 17px; padding: 6px 12px; }
+}
+
+@media (max-width: 380px) {
+  .site-header .container { flex-wrap: wrap; }
 }

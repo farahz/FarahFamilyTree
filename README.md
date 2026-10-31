@@ -6,6 +6,8 @@ Family website with an interactive family tree, built from two GEDCOM files (two
 - **Static site** (plain HTML/CSS/JS, no build step) → hosted on GitHub Pages
 - **Supabase** (project `dmacifguvdyvpkgfgbcp`) → database + login for editors
 - Without a Supabase key the site runs in **read-only demo mode** from `data/family.json`
+- **Phone friendly**: one-row header and tree toolbar (icon buttons, pinch to zoom), the tree opens at a
+  readable zoom with the root at the screen edge, and person details slide up as a bottom sheet
 
 ## Structure
 

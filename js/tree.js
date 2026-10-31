@@ -10,6 +10,7 @@
   const GAP_Y = 46;    // distance between siblings
   const CARD_H = 34;
   const INITIAL_DEPTH = 4;
+  const MIN_READABLE_K = 0.75; // smallest starting zoom on phones (names stay ~11px)
   const DIR = L.lang === 'en' ? 1 : -1; // direction generations grow along the x axis
   const fmt = L.num;
   const cardWidth = (name) => Math.max(72, Math.min(170, name.length * 8.5 + 28));
@@ -142,12 +143,18 @@
     else svg.call(zoom.transform, tr);
   }
 
-  function fit(duration = 600) {
+  // readable: on a narrow screen, never shrink below a legible scale; pin the root to its edge instead.
+  function fit(duration = 600, { readable = false } = {}) {
     const pts = [...positions.values()];
     const minX = d3.min(pts, (p) => p.x - p.w / 2), maxX = d3.max(pts, (p) => p.x + p.w / 2);
     const minY = d3.min(pts, (p) => p.y) - CARD_H, maxY = d3.max(pts, (p) => p.y) + CARD_H;
     const { w, h } = viewport();
     const k = Math.min(1.1, 0.92 * Math.min(w / (maxX - minX), h / (maxY - minY)));
+    if (readable && k < MIN_READABLE_K && w < 560) {
+      const r = positions.get(rootPerson.id), kk = MIN_READABLE_K;
+      const rootEdge = DIR > 0 ? 16 + (r.w / 2) * kk : w - 16 - (r.w / 2) * kk;
+      return applyTransform(d3.zoomIdentity.translate(rootEdge - r.x * kk, h / 2 - r.y * kk).scale(kk), duration);
+    }
     const tr = d3.zoomIdentity.translate(w / 2 - ((minX + maxX) / 2) * k, h / 2 - ((minY + maxY) / 2) * k).scale(k);
     applyTransform(tr, duration);
   }
@@ -427,6 +434,6 @@
     if (results.length === 1) choose(0);
     else input.focus();
   } else {
-    fit(0);
+    fit(0, { readable: true });
   }
 })();

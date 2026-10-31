@@ -9,7 +9,8 @@ Family website with an interactive family tree, built from two GEDCOM files (two
 - **Phone friendly**: one-row header and tree toolbar (icon buttons, pinch to zoom), the tree opens at a
   readable zoom with the root at the screen edge, and person details slide up as a bottom sheet
 - **Photo slideshow** in the history section: every image uploaded to `assets/photos/` on GitHub is shown
-  (listed through the public GitHub API, so no file list to maintain), with swipe, arrows and a full-screen view
+  (listed through the public GitHub API, so no file list to maintain), with swipe, arrows and a full-screen view;
+  a same-named `.txt` file adds a title and story shown under the photo in the full-screen view
 
 ## Structure
 

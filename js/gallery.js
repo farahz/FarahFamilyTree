@@ -1,18 +1,26 @@
 // Home page photo slideshow in the history section. A static site can't list a folder, so the images in
 // assets/photos/ are listed through the GitHub API. With no photos (or no API) the illustration stays.
+// A text file with the same name as a photo (photo.txt, or photo.en.txt for English) is its description:
+// the first line is the title shown in the caption, the rest is shown under the photo in the full-screen view.
 (async function () {
-  const { t, num } = window.I18N;
+  const { t, num, lang } = window.I18N;
+  const { esc } = window.UI;
   const { repo, path } = window.FARAH_CONFIG.photos;
   const fig = document.querySelector('.about-figure');
   if (!fig) return;
 
+  const url = (f) => f.path.split('/').map(encodeURIComponent).join('/');
+  const base = (name) => name.replace(/\.[^.]+$/, '');
   let photos;
   try {
     const res = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`);
     if (!res.ok) return;
-    photos = (await res.json())
-      .filter((f) => f.type === 'file' && /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name))
-      .map((f) => f.path.split('/').map(encodeURIComponent).join('/'));
+    const files = (await res.json()).filter((f) => f.type === 'file');
+    const texts = new Map(files.filter((f) => /\.txt$/i.test(f.name)).map((f) => [base(f.name), url(f)]));
+    const textFor = (b) => (lang === 'en' ? texts.get(b + '.en') || texts.get(b) : texts.get(b) || texts.get(b + '.en'));
+    photos = files
+      .filter((f) => /\.(jpe?g|png|webp|gif|avif)$/i.test(f.name))
+      .map((f) => ({ src: url(f), textUrl: textFor(base(f.name)), title: '', body: '' }));
   } catch (e) {
     return;
   }
@@ -29,10 +37,10 @@
   const caption = fig.querySelector('figcaption');
   caption.removeAttribute('data-i18n');
   fig.classList.add('has-photos');
-  const slides = photos.map((src, i) => {
+  const slides = photos.map((p, i) => {
     const img = document.createElement('img');
     img.className = 'slide';
-    img.src = src;
+    img.src = p.src;
     img.alt = '';
     img.decoding = 'async';
     if (i) img.loading = 'lazy';
@@ -44,23 +52,44 @@
     (many ? navButton('prev', 'photo_prev') + navButton('next', 'photo_next') : ''));
   fig.append(caption); // keep the caption above the buttons
 
-  // ---------- Full-screen viewer ----------
+  // ---------- Full-screen viewer: photo, then its description ----------
   const box = document.createElement('dialog');
   box.className = 'lightbox';
-  box.innerHTML = `<img alt="">
-    <button type="button" class="photo-nav lightbox-close" aria-label="${t('close')}" title="${t('close')}">×</button>
-    ${many ? navButton('prev', 'photo_prev') + navButton('next', 'photo_next') : ''}
-    <div class="lightbox-count"></div>`;
+  box.innerHTML = `<button type="button" class="photo-nav lightbox-close" aria-label="${t('close')}" title="${t('close')}">×</button>
+    <div class="lightbox-body">
+      <img alt="">
+      ${many ? `<div class="lightbox-bar">${navButton('prev', 'photo_prev')}<span class="lightbox-count"></span>${navButton('next', 'photo_next')}</div>` : ''}
+      <article class="lightbox-text" hidden></article>
+    </div>`;
   document.body.append(box);
   const boxImg = box.querySelector('img');
+  const boxText = box.querySelector('.lightbox-text');
+
+  // Descriptions are small text files; load them all up front so captions show titles.
+  await Promise.all(photos.filter((p) => p.textUrl).map(async (p) => {
+    try {
+      const res = await fetch(p.textUrl);
+      if (!res.ok) return;
+      const [title, ...rest] = (await res.text()).replace(/\r/g, '').trim().split('\n');
+      p.title = title.trim();
+      p.body = rest.join('\n').trim();
+    } catch (e) { /* show the photo without a description */ }
+  }));
 
   function show(i) {
     current = (i + photos.length) % photos.length;
+    const p = photos[current];
     slides.forEach((s, j) => s.classList.toggle('active', j === current));
-    const count = many ? ` · ${num(current + 1)} / ${num(photos.length)}` : '';
-    caption.textContent = t('photos_caption') + count;
-    boxImg.src = photos[current];
-    box.querySelector('.lightbox-count').textContent = many ? `${num(current + 1)} / ${num(photos.length)}` : '';
+    const count = many ? `${num(current + 1)} / ${num(photos.length)}` : '';
+    caption.textContent = (p.title || t('photos_caption')) + (count ? ' · ' + count : '');
+    boxImg.src = p.src;
+    boxImg.alt = p.title;
+    if (many) box.querySelector('.lightbox-count').textContent = count;
+    boxText.hidden = !p.title && !p.body;
+    boxText.dir = /[؀-ۿ]/.test(p.title + p.body) ? 'rtl' : 'ltr';
+    boxText.innerHTML = (p.title ? `<h2>${esc(p.title)}</h2>` : '') +
+      p.body.split(/\n\s*\n/).filter(Boolean).map((para) => `<p>${esc(para.trim())}</p>`).join('');
+    box.scrollTop = 0;
   }
 
   // ---------- Auto-advance (off for reduced motion, paused while hovered, viewing or hidden) ----------
@@ -79,10 +108,11 @@
   fig.querySelector('.photo-open').addEventListener('click', () => {
     if (swiped) return;
     box.showModal();
+    box.scrollTop = 0;
     restart();
   });
   box.querySelector('.lightbox-close').addEventListener('click', () => box.close());
-  box.addEventListener('click', (e) => { if (e.target === box) box.close(); });
+  box.addEventListener('click', (e) => { if (e.target === box || e.target.classList.contains('lightbox-body')) box.close(); });
   box.addEventListener('close', restart);
   box.addEventListener('keydown', (e) => {
     if (e.key === 'ArrowRight') step(rtl ? -1 : 1);
